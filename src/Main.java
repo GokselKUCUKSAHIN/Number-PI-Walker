@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -56,26 +57,22 @@ public class Main extends Application
             Color.hsb(288, 1, 1),
             Color.hsb(324, 1, 1)
     };
-
-    private static ArrayList<Byte> pi_pos = new ArrayList<>();
+    private static Number piNum;
 
     @Override
     public void start(Stage stage) throws Exception
     {
-
-        File text = new File("pi_neo.txt");
-        //Creating Scanner instnace to read File in Java
-        Scanner scanner = new Scanner(text);
-
-        //Reading each line of file using Scanner class
-        while (scanner.hasNextLine())
+        //
+        try
         {
-            String line = scanner.nextLine();
-            for (int i = 0; i < line.length(); i++)
-            {
-                pi_pos.add((byte) Character.getNumericValue(line.charAt(i)));
-            }
+            // Load Numbers on to Number Object
+            piNum = GetData.getFile("Numbers/number_Pi.txt");
         }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
 
         Pane root = new Pane();
         child = root.getChildren();
@@ -120,7 +117,7 @@ public class Main extends Application
             for (int i = 0; i < 50; i++)
             {
                 gc.setStroke(Color.hsb(hue, 1, 1, 0.5));
-                center = drawLine(center, pi_pos.get(piCount++)); // 8
+                center = drawLine(center, (byte)Character.getNumericValue(piNum.getDigits().get(piCount++))); // 8
                 hue += 0.02;
             }
         }));
